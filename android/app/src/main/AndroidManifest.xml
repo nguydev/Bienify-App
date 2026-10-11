@@ -1,0 +1,92 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Nearby cash-payment points -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <!-- Selfie, ID card, licence and vehicle photos. The camera is optional
+         hardware: a tablet without one still installs, and the picker falls
+         back to the gallery. -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+
+    <!-- Live video consultation. Agora needs the microphone and, to keep a
+         call alive across a network change or a Bluetooth headset, the audio
+         and network settings alongside it. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-feature android:name="android.hardware.microphone" android:required="false"/>
+
+    <application
+        android:label="bienify_app"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Specifies an Android theme to apply to this Activity as soon as
+                 the Android process has started. This theme is visible to the user
+                 while the Flutter UI initializes. After that, this theme continues
+                 to determine the Window background behind the Flutter UI. -->
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <!-- Google Maps: powers Nearby Payment Points and live delivery
+             tracking.
+
+             If the map draws a blank grid and logcat says "Authorization
+             failure", the key is fine here and the console is not. Three
+             things must all be true:
+
+             1. "Maps SDK for Android" is ENABLED for the key's project at
+                https://console.cloud.google.com/apis/library/maps-android.backend
+                (enabling "Maps JavaScript API" or "Maps SDK for iOS" does
+                not cover Android).
+             2. Billing is enabled on that project — the Maps SDK refuses
+                requests without it, even inside the free tier.
+             3. If the key has an "Android apps" restriction, this package
+                and the signing certificate must be listed:
+                  package: com.example.bienify_app
+                  debug SHA-1: E4:20:D3:BC:CC:CE:ED:B7:9C:B6:64:DD:0B:36:49:0C:7F:E6:99:3C
+                Add the release SHA-1 too before shipping — a debug build and
+                a release build are different certificates.
+
+             Keep the restriction. Anything shipped in an APK can be
+             extracted from it, so an unrestricted key is a billable one. -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDzIh16RvM4ajB6XGdl9adsVJJUGJP13wU"/>
+
+        <!-- Don't delete the meta-data below.
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+    <!-- Required to query activities that can process text, see:
+         https://developer.android.com/training/package-visibility and
+         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+
+         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+    </queries>
+</manifest>
